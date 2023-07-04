@@ -16,7 +16,7 @@ docker-compose up -d laravel_playground_dev
 ```
 on your commandline. 
 Note that all necessary commands for laravel are executed via the docker entrypoint.
-Just wait a few seconds, npm need some time. 
+**After the first build has finished wait one or two minutes, npm need some time.** 
 
 You should now be able to access the application in your browser.
 Just visit [http://localhost:3100](http://localhost:3100)
