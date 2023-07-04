@@ -53,3 +53,9 @@ php artisan config:cache --env=testing
 ```
 php artisan migrate:fresh --seed &&  y | php artisan passport:install --uuids && vendor/bin/phpunit
 ```
+
+## API Docs
+***
+
+The APIs are well documented with Swagger & Open API 3.
+Just visit [http://localhost:3100/api/docs](http://localhost:3100/api/docs)
