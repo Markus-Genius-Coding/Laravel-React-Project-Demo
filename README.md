@@ -6,7 +6,7 @@ After you checked out the project via git simple run
 cd /your/project/path
 ```
 ```
-cp /your/project/path/.env.example /your/project/path/.env 
+cp .env.example .env 
 ```
 ```
 docker network create laravel_playground_network
