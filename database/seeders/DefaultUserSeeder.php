@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 class DefaultUserSeeder extends Seeder {
 
     public const DEFAULT_EMAIL = 'testuser@mw-systems.com';
-    public const DEFAULT_PASSWORD = 'Hallo123';
+    public const DEFAULT_PASSWORD = 'auOeo8237#ä+ß?';
     /**
      * Run the database seeds.
      */
