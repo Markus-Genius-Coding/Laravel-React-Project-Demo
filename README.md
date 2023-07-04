@@ -12,7 +12,7 @@ docker network create laravel_playground_network
 docker-compose up -d laravel_playground_dev
 ```
 on your commandline. 
-Note that all necessary commands for laravel are execuded via the docker entrypoint.
+Note that all necessary commands for laravel are executed via the docker entrypoint.
 Just wait a few seconds, npm need some time. 
 
 You should now be able to access the application in your browser.

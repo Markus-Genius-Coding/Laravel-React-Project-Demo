@@ -26,7 +26,7 @@ class ApiRequest extends FormRequest
 
     /**
      * Called if the requestvalidation fails.
-     * Overreite it to handle custom redirects or default responses or something like that.
+     * Override it to handle custom redirects or default responses or something like that.
      *
      *  @param Validator
      *  @return \Illuminate\Http\JsonResponse
