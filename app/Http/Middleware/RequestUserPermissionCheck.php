@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Encoding\JoseEncoder;
+use Symfony\Component\HttpFoundation\Response;
 
 class RequestUserPermissionCheck
 {
@@ -32,7 +33,7 @@ class RequestUserPermissionCheck
                 $bearerToken = $request->access_token;
             } else {
                 Log::debug('Authorization is missing!');
-                return response()->json([], 403);
+                return response()->json([], Response::HTTP_FORBIDDEN);
             }
 
             $serviceNames = explode('|', $serviceNames);
@@ -45,10 +46,9 @@ class RequestUserPermissionCheck
 
             if ($token == null) {
                 Log::debug("Token not found");
-                return response()->json([], 401);
+                return response()->json([], Response::HTTP_UNAUTHORIZED);
             }
 
-            Log::debug('token: ', [$token]);
             $user = User::where('id', '=', $token->user_id)->first();
 
             // Check user permissions
@@ -66,24 +66,24 @@ class RequestUserPermissionCheck
             // Check if user token expired
             if ($token->expires_at < Carbon::now()->format('Y-m-d H:i:s')) {
                 Log::debug("User Token expired");
-                return response()->json(['code' => -1, 'msg' => "expired"], 401);
+                return response()->json(['code' => -1, 'msg' => "expired"], Response::HTTP_UNAUTHORIZED);
             }
 
         } catch (\Exception $e) {
             Log::error('Token validation error: ' . $e->getMessage() . PHP_EOL . $e->getTraceAsString());
 
-            return response()->json([], 500);
+            return response()->json([], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         if ($user != null && $hasPermissions == true) {
             return $next($request);
         } else if ($user == null) {
             Log::error("No user found for received token, status: 401");
-            return response()->json([], 401);
+            return response()->json([], Response::HTTP_UNAUTHORIZED);
         } else if ($hasPermissions == false) {
-            return response()->json([], 403);
+            return response()->json([], Response::HTTP_FORBIDDEN);
         } else {
-            return response()->json([], 400);
+            return response()->json([], Response::HTTP_BAD_REQUEST);
         }
     }
 }

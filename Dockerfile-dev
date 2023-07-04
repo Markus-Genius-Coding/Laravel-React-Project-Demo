@@ -47,9 +47,9 @@ COPY .docker/php-settings/* /usr/local/etc/php/conf.d/
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+
 RUN chown -R www-data:www-data /var/www/html \
     && a2enmod rewrite
-
 
 # Copy crontab file to the cron.d directory
 COPY .docker/cronjob/crontab /etc/cron.d/crontab
@@ -63,3 +63,4 @@ COPY .docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY .docker/supervisor/conf.d /etc/supervisor/conf.d/
 CMD ["/usr/bin/supervisord"]
 
+ENTRYPOINT ["/var/www/html/docker-start-script.sh"]

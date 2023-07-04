@@ -18,6 +18,7 @@ function ProjectList() {
             }
         })
             .then(function (response) {
+                console.log(response.data)
                 setProjectList(response.data);
             })
             .catch(function (error) {

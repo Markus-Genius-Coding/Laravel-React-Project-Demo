@@ -10093,6 +10093,7 @@ function ProjectList() {
         'Authorization': JSON.parse(localStorage.getItem('authdata')).access_token
       }
     }).then(function (response) {
+      console.log(response.data);
       setProjectList(response.data);
     })["catch"](function (error) {
       console.log(error);

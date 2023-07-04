@@ -5,10 +5,10 @@
         "version": "0.0.1"
     },
     "paths": {
-        "/api/v1/login": {
+        "/api/user/login": {
             "post": {
                 "tags": [
-                    "auth"
+                    "AuthController"
                 ],
                 "summary": "Login a user",
                 "description": "Login a user",
@@ -47,10 +47,6 @@
                             "application/json": {
                                 "schema": {},
                                 "example": {
-                                    "status": {
-                                        "code": 0,
-                                        "msg": "ok"
-                                    },
                                     "authdata": {
                                         "token_type": "Bearer",
                                         "expires_in": 3600,
@@ -91,13 +87,286 @@
                 }
             }
         },
-        "/api/v1/registeruser": {
+        "/api/projects": {
+            "get": {
+                "tags": [
+                    "ProjectController"
+                ],
+                "summary": "Get all projects",
+                "description": "Get all projects",
+                "operationId": "getAll",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Provide user authentication token",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Everything is ok.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": [
+                                    {
+                                        "id": 123,
+                                        "name": "Project name",
+                                        "desicription": "Project description",
+                                        "created_at": "2023-04-05 11:33:22",
+                                        "updated_at": "2023-04-05 11:33:22"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization is invalid."
+                    }
+                }
+            },
             "post": {
                 "tags": [
-                    "users"
+                    "ProjectController"
                 ],
-                "summary": "create a new user in HILDA-System",
-                "description": "creates a new user in HILDA-System",
+                "summary": "Create a project",
+                "description": "Create a project",
+                "operationId": "create",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Provide user authentication token",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "description": "Body to create a new project",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Project name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Everything is ok.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "id": 123,
+                                    "name": "Project name",
+                                    "desicription": "Project description",
+                                    "created_at": "2023-04-05 11:33:22",
+                                    "updated_at": "2023-04-05 11:33:22"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request, read the msg of the status object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": {
+                                        "code": -1,
+                                        "msg": "name already taken."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization is invalid."
+                    }
+                }
+            }
+        },
+        "/api/projects/{id}": {
+            "get": {
+                "tags": [
+                    "ProjectController"
+                ],
+                "summary": "Get a project",
+                "description": "Get a project",
+                "operationId": "getById",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Provide user authentication token",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Everything is ok.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "id": 123,
+                                    "name": "Project name",
+                                    "desicription": "Project description",
+                                    "created_at": "2023-04-05 11:33:22",
+                                    "updated_at": "2023-04-05 11:33:22"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization is invalid."
+                    },
+                    "404": {
+                        "description": "Object not found."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "ProjectController"
+                ],
+                "summary": "Delete a project",
+                "description": "Delete a project",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Provide user authentication token",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Everything is ok."
+                    },
+                    "400": {
+                        "description": "Bad Request, read the msg of the status object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": {
+                                        "code": -1,
+                                        "msg": "name already taken."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization is invalid."
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "ProjectController"
+                ],
+                "summary": "Patch a project",
+                "description": "Patch a project",
+                "operationId": "patch",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Provide user authentication token",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "description": "Body to Patch a new project",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Project name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Everything is ok.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "id": 123,
+                                    "name": "Project name",
+                                    "desicription": "Project description",
+                                    "created_at": "2023-04-05 11:33:22",
+                                    "updated_at": "2023-04-05 11:33:22"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request, read the msg of the status object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": {
+                                        "code": -1,
+                                        "msg": "name already taken."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization is invalid."
+                    }
+                }
+            }
+        },
+        "/api/registeruser": {
+            "post": {
+                "tags": [
+                    "RegisterController"
+                ],
+                "summary": "create a new user",
+                "description": "creates a new user",
                 "operationId": "registeruser",
                 "requestBody": {
                     "description": "userdata in requestbody",
@@ -114,10 +383,6 @@
                                     "confirmed_password"
                                 ],
                                 "properties": {
-                                    "salutation_id": {
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
                                     "firstname": {
                                         "type": "string",
                                         "format": "string",
@@ -136,17 +401,12 @@
                                     "password": {
                                         "type": "string",
                                         "format": "string",
-                                        "example": "#RudiHat35cm"
+                                        "example": "#hallo123+#+?"
                                     },
                                     "confirmed_password": {
                                         "type": "string",
                                         "format": "string",
-                                        "example": "#RudiHat35cm"
-                                    },
-                                    "birthday": {
-                                        "type": "string",
-                                        "format": "string",
-                                        "example": "2000-02-05"
+                                        "example": "#hallo123+#+?"
                                     }
                                 },
                                 "type": "object"
@@ -156,18 +416,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "If the status->code != 0 some error occurred.",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": {
-                                    "status": {
-                                        "code": 0,
-                                        "msg": "OK"
-                                    }
-                                }
-                            }
-                        }
+                        "description": "Everything is ok."
                     },
                     "400": {
                         "description": "Bad Request, read the msg of the status object.",

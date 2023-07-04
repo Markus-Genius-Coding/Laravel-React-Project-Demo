@@ -1,7 +1,7 @@
 # For more information: https://laravel.com/docs/sail
 version: '3.3'
 services:
-    laravel_playground:
+    laravel_playground_dev:
         build:
             context: .
             dockerfile: Dockerfile-dev
@@ -18,7 +18,9 @@ services:
             - laravel_playground_network
         depends_on:
             - mariadb
+            - mariadb_unittests
             - phpmyadmin
+            - phpmyadmin_unittests
 
     phpmyadmin:
         image: phpmyadmin
@@ -46,14 +48,49 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_USER: ${DB_USERNAME}
         volumes:
-            - laravel_playground_network_sql_dbdata:/var/lib/mysql
+            - laravel_playground_sql_dbdata:/var/lib/mysql
+            - ./.mysql/my.cnf:/etc/mysql/my.cnf
+        command: --default-authentication-plugin=mysql_native_password
+        networks:
+            - laravel_playground_network
+
+
+    phpmyadmin_unittests:
+        image: phpmyadmin
+        restart: unless-stopped
+        expose:
+            - "3103"
+        ports:
+            - "3103:80"
+        environment:
+            - PMA_HOST=mariadb_unittests
+            - PMA_PORT=3306
+        networks:
+            - laravel_playground_network
+
+    mariadb_unittests:
+        image: mariadb:10.6
+        container_name: laravel_playground_maria_db_unittests
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3104:3306"
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+        volumes:
+            - laravel_playground_sql_unittest_dbdata:/var/lib/mysql
             - ./.mysql/my.cnf:/etc/mysql/my.cnf
         command: --default-authentication-plugin=mysql_native_password
         networks:
             - laravel_playground_network
 
 volumes:
-    laravel_playground_network_sql_dbdata:
+    laravel_playground_sql_dbdata:
+        driver: local
+    laravel_playground_sql_unittest_dbdata:
         driver: local
 
 networks:

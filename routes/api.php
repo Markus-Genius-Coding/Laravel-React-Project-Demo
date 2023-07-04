@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ProjectController;
+use App\Http\Controllers\API\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\API\RegisterController;
-use App\Http\Controllers\API\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,12 +17,15 @@ use App\Http\Controllers\API\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::group(["middleware"=>"permissioncheck:User"], function() {
-    Route::apiResource('projects', ProjectController::class);
+    Route::prefix('projects') ->group(function () {
+        Route::get('', [ProjectController::class, 'getAll']);
+        Route::post('', [ProjectController::class, 'create']);
+        Route::patch('/{id}', [ProjectController::class, 'patch']);
+        Route::get('/{id}', [ProjectController::class, 'getById']);
+        Route::delete('/{id}', [ProjectController::class, 'delete']);
+    });
 });
 
 // AUTH and Register Routes

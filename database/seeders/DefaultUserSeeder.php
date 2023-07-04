@@ -13,8 +13,8 @@ use Illuminate\Support\Str;
 
 class DefaultUserSeeder extends Seeder {
 
-    private const DEFAULT_EMAIL = 'testuser@mw-systems.com';
-
+    public const DEFAULT_EMAIL = 'testuser@mw-systems.com';
+    public const DEFAULT_PASSWORD = 'Hallo123';
     /**
      * Run the database seeds.
      */
@@ -37,7 +37,7 @@ class DefaultUserSeeder extends Seeder {
         $user->firstname = 'Default';
         $user->lastname = 'Admin';
         $user->email = self::DEFAULT_EMAIL;
-        $user->password = Hash::make('hallo123');
+        $user->password = Hash::make(self::DEFAULT_PASSWORD);
         $user->activation_code = User::getUniqueActivationCode();
         $user->email_verified_at = Carbon::now();
         $user->save();

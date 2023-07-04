@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -38,7 +39,7 @@ class ApiRequest extends FormRequest
                     'code' => -1,
                     'msg' => $validator->getMessageBag()->first()
                 ]
-        ], 400);
+        ], Response::HTTP_BAD_REQUEST);
         throw new HttpResponseException($response);
     }
 
