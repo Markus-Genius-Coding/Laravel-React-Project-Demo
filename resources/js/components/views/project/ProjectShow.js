@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../Layout"
+import AuthService from "../../../services/Authservice";
 
 function ProjectShow() {
     const [id, setId] = useState(useParams().id)
@@ -19,6 +20,9 @@ function ProjectShow() {
             .catch(function (error) {
                 $('#loader').hide();
                 console.log(error);
+                if (error.response.status == 401 || error.response.status == 403) {
+                    AuthService.logout()
+                }
             })
     }, [])
 

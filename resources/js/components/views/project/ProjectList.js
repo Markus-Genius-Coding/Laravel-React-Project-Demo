@@ -1,10 +1,11 @@
-import React,{ useState, useEffect} from 'react';
-import { Link } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import {Link} from "react-router-dom";
 import Layout from "../../Layout"
 import Swal from 'sweetalert2'
+import AuthService from "../../../services/Authservice";
 
 function ProjectList() {
-    const  [projectList, setProjectList] = useState([])
+    const [projectList, setProjectList] = useState([])
 
     useEffect(() => {
         $('#create_btn').hide();
@@ -14,20 +15,23 @@ function ProjectList() {
     const fetchProjectList = () => {
         axios.get('/api/projects', {
             headers: {
-                'Authorization' : JSON.parse(localStorage.getItem('authdata')).access_token,
+                'Authorization': JSON.parse(localStorage.getItem('authdata')).access_token,
             }
         })
-            .then(function (response) {
-                console.log(response.data)
-                setProjectList(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-            .finally(() => {
-                $('#loader').hide();
-                $('#create_btn').show();
-            })
+        .then(function (response) {
+            console.log(response.data)
+            setProjectList(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+            if (error.response.status == 401 || error.response.status == 403) {
+                AuthService.logout()
+            }
+        })
+        .finally(() => {
+            $('#loader').hide();
+            $('#create_btn').show();
+        })
     }
 
     const handleDelete = (id) => {
@@ -43,39 +47,55 @@ function ProjectList() {
             if (result.isConfirmed) {
                 $('#loader').show();
                 $('#create_btn').hide();
-                axios.delete(`/api/projects/${id}`,  { headers: {
-                        'Authorization' : JSON.parse(localStorage.getItem('authdata')).access_token,
-                    }})
-                    .then(function (response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Project deleted successfully!',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        fetchProjectList()
+                axios.delete(`/api/projects/${id}`, {
+                    headers: {
+                        'Authorization': JSON.parse(localStorage.getItem('authdata')).access_token,
+                    }
+                })
+                .then(function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Project deleted successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
                     })
-                    .catch(function (error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'An error occured!',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then((result) => {
-                            $('#loader').hide();
-                            $('#create_btn').show();
-                        })
-                    });
+                    fetchProjectList()
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An error occured!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then((result) => {
+                        $('#loader').hide();
+                        $('#create_btn').show();
+                    })
+                });
             }
         })
+    }
+
+    const logout = () => {
+        AuthService.logout()
     }
 
     return (
         <Layout>
             <div className="container">
                 <h2 className="text-center mt-5 mb-3">Laravel Project Manager</h2>
-                <div className="card">
+                <div className="row">
+                    <div className="card-header" id="logout_btn">
+                        <Link
+                            className="btn btn-outline-danger"
+                            onClick={logout}
+                            >Logout
+                        </Link>
 
+                    </div>
+                </div>
+                <div className="m-4"></div>
+                <div className="card">
                     <div className="card-header" id="create_btn">
                         <Link
                             className="btn btn-outline-primary"
@@ -98,7 +118,7 @@ function ProjectList() {
                             </tr>
                             </thead>
                             <tbody>
-                            {projectList.map((project, key)=>{
+                            {projectList.map((project, key) => {
                                 return (
                                     <tr key={key}>
                                         <td>{project.name}</td>
@@ -115,7 +135,7 @@ function ProjectList() {
                                                 Edit
                                             </Link>
                                             <button
-                                                onClick={()=>handleDelete(project.id)}
+                                                onClick={() => handleDelete(project.id)}
                                                 className="btn btn-outline-danger mx-1">
                                                 Delete
                                             </button>

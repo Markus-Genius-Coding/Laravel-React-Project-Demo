@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../Layout"
 import Swal from 'sweetalert2'
 import React, { useState, useEffect } from 'react';
+import AuthService from "../../../services/Authservice";
 
 function ProjecCreate() {
     const [name, setName] = useState('');
@@ -47,6 +48,9 @@ function ProjecCreate() {
                 })
                 .then((result) => {
                     $('#loader').hide();
+                    if (error.response.status == 401 || error.response.status == 403) {
+                        AuthService.logout()
+                    }
                 })
                 setIsSaving(false)
             });

@@ -1,4 +1,5 @@
-## About
+# Laravel React Demo
+***
 
 This is a dockerized Laravelapplication to demonstrate Laravel with Passport, Rest-APIs and a React-Frontend. 
 After you checked out the project via git simple run 
@@ -25,15 +26,22 @@ To login just use these credentials:
 User: testuser@mw-systems.com
 Password: auOeo8237#ä+ß?
 
-You can access the databases via PhpMyAdmin. On port 3101 is the database used for development. 
+
+## Databases
+***
+For development: You can access the databases via PhpMyAdmin on port 3101. 
 Just visit [http://localhost:3101](http://localhost:3101)
 
-You can access the databases via PhpMyAdmin. On port 3103 is the database used for unittests.
+For unittests: You can access the databases via PhpMyAdmin on port 3103.
 Just visit [http://localhost:3103](http://localhost:3103)
 
 To login into the databases use these credentials:
 User: root
 Password: äshnn3LO?1oOß
+
+
+## Unit tests
+***
 
 If you like to run the tests run following commands: 
 ```

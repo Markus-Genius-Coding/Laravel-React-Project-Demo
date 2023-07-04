@@ -30,9 +30,16 @@ const login = (email, password) => {
     ;
 };
 
+const logout =() => {
+    localStorage.removeItem("userdata");
+    localStorage.removeItem("authdata");
+    window.location = "/login"
+}
+
 const AuthService = {
     register,
     login,
+    logout,
 }
 
 export default AuthService;

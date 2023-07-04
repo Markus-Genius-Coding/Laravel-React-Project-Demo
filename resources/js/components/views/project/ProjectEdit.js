@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Link, useParams} from "react-router-dom";
 import Layout from "../../Layout"
 import Swal from 'sweetalert2'
-
+import AuthService from "../../../services/Authservice";
 function ProjectEdit() {
     const [id, setId] = useState(useParams().id)
     const [name, setName] = useState('');
@@ -27,6 +27,9 @@ function ProjectEdit() {
                     showConfirmButton: false,
                     timer: 1500
                 })
+                if (error.response.status == 401 || error.response.status == 403) {
+                    AuthService.logout()
+                }
             })
             .finally(() => {
                 $('#loader').hide();
