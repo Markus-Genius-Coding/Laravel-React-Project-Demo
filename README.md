@@ -6,6 +6,9 @@ After you checked out the project via git simple run
 cd /your/project/path
 ```
 ```
+cp /your/project/path/.env.example /your/project/path/.env 
+```
+```
 docker network create laravel_playground_network
 ```
 ```
@@ -18,7 +21,7 @@ Just wait a few seconds, npm need some time.
 You should now be able to access the application in your browser.
 Just visit [http://localhost:3100](http://localhost:3100)
 
-To login just use these credetials: 
+To login just use these credentials: 
 User: testuser@mw-systems.com
 Password: auOeo8237#ä+ß?
 
@@ -28,7 +31,7 @@ Just visit [http://localhost:3101](http://localhost:3101)
 You can access the databases via PhpMyAdmin. On port 3103 is the database used for unittests.
 Just visit [http://localhost:3103](http://localhost:3103)
 
-To login into the databases use these credetials:
+To login into the databases use these credentials:
 User: root
 Password: äshnn3LO?1oOß
 

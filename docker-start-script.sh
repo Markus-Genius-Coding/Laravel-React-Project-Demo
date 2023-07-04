@@ -2,7 +2,6 @@
 
 
 cd /var/www/html/
-cp /var/www/html/.env.example /var/www/html/.env
 composer install
 
 php artisan cache:clear
